@@ -10,4 +10,19 @@ import Foundation
 
 class CategoryItemViewModel: ObservableObject {
     @Published var categoryItems = [CategoryItem]()
+    @Published var budget: Int = 5000
+    
+    
+    //computed properties
+    var totalLeft: Int {
+        budget - categoryItems.reduce(0) { $0 + $1.spent }
+    }
+    
+    var amountSpend: Int {
+        budget - totalLeft
+    }
+    
+    var percentTracker: Double {
+        Double(amountSpend) / Double(budget)
+    }
 }

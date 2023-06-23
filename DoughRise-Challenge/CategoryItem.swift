@@ -6,15 +6,30 @@
 //
 
 import Foundation
+import SwiftUI
 
 
 struct CategoryItem: Codable, Identifiable{
     let id = UUID()
     let icon: String
     let name: String
-    let budget: Double
-    var spent: Double
+    let budget: Int
+    var spent: Int
+    
+    
+    //computed property
     var percentSpent: Double{
-        return budget == 0 ? 0 : spent / budget 
+        return budget == 0 ? 0 : Double(spent) / Double(budget)
     }
+    
+    var categoryColor: Color {
+        if icon == "takeoutbag.and.cup.and.straw.fill" {
+            return Color.orange
+        } else if icon == "graduationcap" {
+            return Color.blue
+        } else {
+            return Color.yellow
+        }
+    }
+    
 }

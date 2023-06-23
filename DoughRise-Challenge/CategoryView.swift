@@ -8,10 +8,16 @@
 import SwiftUI
 
 struct CategoryView: View {
+    @Environment(\.dismiss) var dismiss
+    @State private var inputAmount: Int = 0
     var category: String
     
     var body: some View {
-        Text(category)
+        VStack{
+            Text("Category: \(category)")
+                .font(.title2).bold()
+            
+        }
     }
 }
 
