@@ -12,9 +12,13 @@ struct CategoryItem: Codable, Identifiable{
     let id = UUID()
     let icon: String
     let name: String
-    let budget: Double
-    var spent: Double
+    let budget: Int
+    var spent: Int
+    
     var percentSpent: Double{
-        return budget == 0 ? 0 : spent / budget 
+        return budget == 0 ? 0 : Double(spent) / Double(budget)
     }
+    
+
+
 }
