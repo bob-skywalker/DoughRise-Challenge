@@ -189,6 +189,7 @@ struct ContentView: View {
 //                            .onDelete(perform: removeRow)
                             
                         }
+                        .scrollIndicators(.hidden)
                         
                         .padding()
                     }
