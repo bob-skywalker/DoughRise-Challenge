@@ -24,7 +24,7 @@ extension View {
 struct MoneyText: ViewModifier{
     func body(content: Content) -> some View {
         content
-            .font(.system(size:21, weight: .bold, design: .monospaced))
+            .font(.system(size:18, weight: .bold, design: .monospaced))
             .foregroundColor(.black)
     }
 }
