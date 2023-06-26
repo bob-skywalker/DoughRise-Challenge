@@ -11,7 +11,7 @@ struct MainText: ViewModifier{
     func body(content: Content) -> some View {
         content
             .font(Font.title2)
-            .foregroundColor(.white)
+            .foregroundColor(.black)
     }
 }
 
@@ -24,8 +24,8 @@ extension View {
 struct MoneyText: ViewModifier{
     func body(content: Content) -> some View {
         content
-            .font(.system(size:19, weight: .bold, design: .monospaced))
-            .foregroundColor(.white)
+            .font(.system(size:21, weight: .bold, design: .monospaced))
+            .foregroundColor(.black)
     }
 }
 
@@ -46,99 +46,88 @@ struct ContentView: View {
         CategoryItem(icon: "cross.case", name: "Medical", budget: Int.random(in: 200...500), spent: Int.random(in: 100...200))
     ]
     
-
+    
     
     //dummy progress eg
     
     var body: some View {
         GeometryReader { geo in
             ZStack{
-                LinearGradient(colors: [.blue, .indigo, .mint], startPoint: .top, endPoint: .bottom)
+                Color.indigo
                     .ignoresSafeArea()
                 
                 VStack{
                     VStack{
-                                                
-                        HStack{
-                            Text(self.dateString)
-                                .foregroundStyle(Color.white)
+                        VStack(spacing: 25){
                             
-                            Image(systemName: "arrowtriangle.down.fill")
-                                .foregroundStyle(Color.white)
+                            HStack{
+                                Text(self.dateString)
+                                    .foregroundStyle(Color.green)
+                                    .font(.system(size: 14, weight: .bold))
+                                
+                                Image(systemName: "arrowtriangle.down.fill")
+                                    .foregroundStyle(Color.green)
+                                
+                            }
+                            .foregroundColor(.green).bold()
+                            .padding(5)
+                            .background(
+                                Color.green.opacity(0.23)
+                            )
+                            
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                            
+                            
+                            HStack(spacing: 20){
+                                VStack(alignment: .leading, spacing: 7){
+                                    Text("Spent")
+                                        .mainText()
+                                    
+                                    Text("$\(vm.amountSpend)")
+                                        .moneyText()
+                                        .animation(.interactiveSpring(), value: vm.amountSpend)
+                                    
+                                }
+                                
+                                Divider()
+                                    .frame(height: 40)
+                                
+                                
+                                VStack(alignment: .leading, spacing: 7){
+                                    Text("Available")
+                                        .mainText()
+                                    Text("$\(vm.totalLeft)")
+                                        .foregroundColor(.green)
+                                        .moneyText()
+                                    
+                                    
+                                    
+                                }
+                                
+                                
+                                Divider()
+                                    .frame(height: 40)
+                                
+                                
+                                VStack(alignment: .leading, spacing: 7){
+                                    Text("Budget")
+                                        .mainText()
+                                    
+                                    Text("$\(vm.budget)")
+                                        .moneyText()
+                                    
+                                    
+                                }
+                            }
+                            ProgressView(value: vm.percentTracker)
+                                .progressViewStyle(LinearProgressViewStyle(tint: Color.indigo))
+                                .scaleEffect(x:0.9, y:10, anchor: .center)
+                                .animation(.interactiveSpring(), value: vm.percentTracker)
+                                .padding(.top, 15)
+                                .padding(.bottom, 25)
                         }
-                        .foregroundColor(.green).bold()
-                        .padding(5)
-                        .background(
-                            LinearGradient(colors: [.orange, .yellow, .red], startPoint: .top, endPoint: .bottom)
-                                .opacity(0.95)
-                        )
                         
-                        .clipShape(RoundedRectangle(cornerRadius: 10))
-
                         
-                        HStack(spacing: 20){
-                            VStack(alignment: .leading, spacing: 7){
-                                Text("Spent")
-                                    .mainText()
-                                
-                                Text("$\(vm.amountSpend)")
-                                    .moneyText()
-                                    .animation(.interpolatingSpring(), value: vm.amountSpend)
-                                
-                            }
-                            
-                            Divider()
-                                .frame(height: 40)
-                            
-                            
-                            VStack(alignment: .leading, spacing: 7){
-                                Text("Available")
-                                    .mainText()
-                                Text("$\(vm.totalLeft)")
-                                    .foregroundColor(.green)
-                                    .moneyText()
-
-
-                                
-                            }
-                            
-                            
-                            Divider()
-                                .frame(height: 40)
-                            
-                            
-                            VStack(alignment: .leading, spacing: 7){
-                                Text("Budget")
-                                    .mainText()
-
-                                Text("$\(vm.budget)")
-                                    .moneyText()
-                                
-                                
-                            }
-                        }
-                        ProgressView(value: vm.percentTracker)
-                            .progressViewStyle(LinearProgressViewStyle(tint: Color.green))
-                            .scaleEffect(x:1, y:10, anchor: .center)
-                            .animation(.interactiveSpring(), value: vm.percentTracker)
-                            .padding(.top, 15)
-                        Text("You spent $\(vm.amountSpend) of $\(vm.budget).")
-                            .foregroundStyle(Color.white)
-                            .animation(.easeOut(duration: 0.2), value: vm.amountSpend)
-                            .padding(.top, 30)
-                    }
-                    .padding()
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 10)
-                            .stroke(Color.black, lineWidth: 1.5)
-                    )
-                    .padding(.horizontal,20)
-//                    .background(.black)
-                    
-                    VStack(alignment: .leading){
-                        Text("Category")
-                            .font(.title2).bold()
-                            .foregroundStyle(Color.white)
                         
                         ScrollView{
                             ForEach(Array(vm.categoryItems.enumerated()), id: \.1.id) { index, category in
@@ -153,42 +142,36 @@ struct ContentView: View {
                                         
                                         VStack(alignment: .leading){
                                             Text(category.name)
-                                            Text("Spend $\(category.spent) of $\(category.budget)")
+                                                .font(.system(size: 20, weight: .bold))
+                                            HStack{
+                                                Text("Spent")
+                                                    .foregroundColor(.black.opacity(0.7))
+                                                Text("$\(category.spent)")
+                                                    .foregroundColor(.green).bold()
+                                                Text("of")
+                                                Text("$\(category.budget)")
+                                                    .foregroundColor(.black.opacity(0.7))
+
+                                            }
                                         }
                                         .foregroundStyle(Color.black)
                                         
                                         Spacer()
-                                        VStack(alignment: .leading){
+                                        VStack(alignment: .center){
                                             HStack(spacing: 30){
-                                                Text("$\(category.spent)")
+                                                Text("$\(category.amountLeft)")
                                                     .font(.title2).bold()
                                                     .foregroundStyle(Color.green)
                                                 
-                                                Image(systemName: "trash.fill")
-                                                    .resizable()
-                                                    .scaledToFit()
-                                                    .frame(width: 20, height: 15)
-                                                    .foregroundColor(.red)
-                                                    .onTapGesture {
-                                                        vm.categoryItems.remove(at: index)
-                                                    }
                                                 
                                             }
                                             HStack{
-                                                Text(String(format: "%.2f", category.percentSpent * 100)) + Text("% spent")
+                                                Text("left")
                                             }
-                                            .foregroundColor(.gray)
+                                            .foregroundColor(.black)
                                         }
                                         
                                     }
-//                                    .padding()
-//                                    .overlay(
-//                                        RoundedRectangle(cornerRadius: 10)
-//                                            .stroke(Color.gray, lineWidth: 1)
-//                                            .shadow(color: .gray, radius: 2, x: 0, y: 2)
-//                                    )
-//                                    .background(Color.white.opacity(0.95))
-//                                    .clipShape(RoundedRectangle(cornerRadius: 10))
                                     
                                     
                                     //progressView for the row
@@ -198,43 +181,40 @@ struct ContentView: View {
                                         .padding(.top, 2)
                                     
                                 }
-                                .padding()
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .stroke(Color.gray, lineWidth: 1)
-                                        .shadow(color: .gray, radius: 2, x: 0, y: 2)
-                                )
                                 .background(Color.white.opacity(0.95))
                                 .clipShape(RoundedRectangle(cornerRadius: 10))
-
+                                
                                 
                             }
-                            .onDelete(perform: removeRow)
+//                            .onDelete(perform: removeRow)
                             
                         }
-                    }
-                    .padding()
-                }
-                
-                VStack{
-                    Spacer()
-                    HStack{
-                        Spacer()
-                        Button {
-                            let randomItem = categories.randomElement()!
-                            vm.categoryItems.insert(randomItem, at: 0)
-                        } label: {
-                            Image(systemName: "plus")
-                                .font(.system(size: 24, weight: .bold))
-                                .frame(width: 60, height: 60)
-                                .background(Color.blue)
-                                .foregroundColor(.white)
-                                .cornerRadius(44)
-                                .padding()
-                        }
                         
+                        .padding()
                     }
+                    .padding(.top, 20)
+                    
+                   
                 }
+                .frame(width: geo.size.width * 0.87, height: geo.size.height * 0.80)
+                .background(.white)
+                .clipShape(RoundedRectangle(cornerRadius: 25))
+                
+                Button {
+                        let randomItem = categories.randomElement()!
+                        vm.categoryItems.insert(randomItem, at: 0)
+                    } label: {
+                        Image(systemName: "plus")
+                            .font(.system(size: 24, weight: .bold))
+                            .frame(width: 60, height: 60)
+                            .background(Color.blue)
+                            .foregroundColor(.white)
+                            .cornerRadius(44)
+                            .padding()
+                    }
+                    .position(x: geo.size.width - 40, y: geo.size.height - 40)
+
+                
             }
         }
         
@@ -251,7 +231,7 @@ struct ContentView: View {
         return formatter.string(from: date)
     }
     
-
+    
 }
 
 struct ContentView_Previews: PreviewProvider {

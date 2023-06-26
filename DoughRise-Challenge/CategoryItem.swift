@@ -16,10 +16,16 @@ struct CategoryItem: Codable, Identifiable{
     let budget: Int
     var spent: Int
     
+
+    
     
     //computed property
     var percentSpent: Double{
         return budget == 0 ? 0 : Double(spent) / Double(budget)
+    }
+    
+    var amountLeft: Int {
+        budget - spent 
     }
     
     var categoryColor: Color {
